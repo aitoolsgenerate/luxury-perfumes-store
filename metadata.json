@@ -1,0 +1,6 @@
+{
+  "name": "Luxury Perfumes",
+  "description": "100% authentic niche and designer luxury perfumes storefront featuring curated extrait and eau de parfum collections.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
