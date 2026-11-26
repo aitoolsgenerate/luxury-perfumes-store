@@ -8,6 +8,23 @@ interface ResilientImageProps {
   loading?: 'lazy' | 'eager';
 }
 
+// Import the image assets through Vite so URLs include the configured base path
+// in production and point to the source assets during development.
+const bundledImages = import.meta.glob<string>('/src/assets/images/*', {
+  eager: true,
+  import: 'default',
+  query: '?url',
+});
+
+function resolveImageSrc(src: string): string {
+  const bundledImage = bundledImages[src];
+  if (bundledImage) return bundledImage;
+
+  // Keep support for dynamic/public root-relative paths, such as /images/foo.jpg.
+  // BASE_URL ends in a slash, so stripping leading slashes avoids a double slash.
+  return `${import.meta.env.BASE_URL}${src.replace(/^\/+/, '')}`;
+}
+
 export function ResilientImage({
   src,
   alt,
@@ -48,7 +65,7 @@ export function ResilientImage({
 
   return (
     <img
-      src={src}
+      src={resolveImageSrc(src)}
       alt={alt}
       loading={loading}
       referrerPolicy="no-referrer"
